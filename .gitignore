@@ -1,0 +1,14 @@
+old/
+build/
+debug/
+.vscode/
+testing_from_git/
+theory/smawk-0/
+theory/*.doc
+theory/*.docx
+theory/Отчёт*
+theory/Смолин*
+theory/[*
+bench/*.py
+bench/*.jpg
+bench/*.txt
