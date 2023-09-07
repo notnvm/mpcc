@@ -1,9 +1,12 @@
 # convex convolution
 ### 
 ***
-_Two vectors **a**, **b** of size **N**, **M** are given. One of these vectors is convex i.e._ $$ f(i+1) - f(i) \geq f(i) - f(i-1)\; \forall i $$ 
-_Convex (min,plus) convolution calculates vector **c** in $ O(N+M) $ time complexity using the following rule:_
-$$ c_k = \min_{i+j=k} \{a_i + b_j\} $$
+<!-- _Two vectors **a**, **b** of size **N**, **M** are given. One of these vectors is convex i.e._ $$ f(i+1) - f(i) \geq f(i) - f(i-1)\; \forall i $$ 
+_Convex (min,plus) convolution calculates vector **c** in $ O(N+M) $ time complexity using the following rule:_ -->
+<!-- $ c_k = \min_{i+j=k} \{a_i + b_j\} $ -->
+
+_Two vectors **a**, **b** of size **N**, **M** are given. One of these vectors is convex._
+_Convex (min,plus) convolution calculates vector **c** in  O(N+M)  time complexity._ 
 
 ***
 ### Building
