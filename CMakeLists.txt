@@ -5,19 +5,12 @@ project(mpcc LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
-# set(CMAKE_BUILD_TYPE Release)
-
 set(UTILS src/generator.cpp src/lib.cpp)
 set(EXE src/main.cpp ${UTILS})
 set(BENCH bench/bench.cpp ${UTILS})
 
-# add_library(mpcclib STATIC include/generator.h src/generator.cpp)
-# target_include_directories(mpcclib PRIVATE include)
-
 add_executable(out ${EXE})
 target_include_directories(out PRIVATE include)
-
-# target_link_libraries(out PRIVATE mpcclib)
 
 # from google docs
 include(FetchContent)
