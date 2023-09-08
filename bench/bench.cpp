@@ -2,8 +2,8 @@
 #include "lib.h"
 
 std::vector<int> mpcc_bench(size_t size_a, size_t size_b, int min, int max) {
-    std::vector<int> a{ generator::create_random_seq(size_a, min, max) };
-    std::vector<int> b{ generator::create_convex_seq(size_b, min, max) };
+    std::vector<int> a{ generator::create_seq(size_a, min, max, 0) };
+    std::vector<int> b{ generator::create_seq(size_b, min, max, 1) };
 
     std::vector<int> c = smawk::mpcc(a, b);
 
@@ -11,8 +11,8 @@ std::vector<int> mpcc_bench(size_t size_a, size_t size_b, int min, int max) {
 }
 
 std::vector<int> mpcc_allzero_bench(size_t size) {
-    std::vector<int> a{ generator::create_random_seq(size, 0, 0) };
-    std::vector<int> b{ generator::create_random_seq(size, 0, 0) };
+    std::vector<int> a{ generator::create_seq(size, 0, 0, 0) };
+    std::vector<int> b{ generator::create_seq(size, 0, 0, 1) };
 
     std::vector<int> c = smawk::mpcc(a, b);
 
@@ -42,7 +42,6 @@ void mpcc_all_zero(benchmark::State& state) {
         benchmark::DoNotOptimize(
             mpcc_allzero_bench(state.range(0))
         );
-
     }
 }
 BENCHMARK(mpcc_eqs)->Name("< min,+ > - convex convolution: all-zero")->RangeMultiplier(10)->Range(10, 1'000'000)->Unit(benchmark::kMillisecond);

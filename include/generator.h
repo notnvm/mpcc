@@ -6,7 +6,6 @@
 #include <iostream>
 
 namespace generator {
-    std::vector<int> create_random_seq(size_t size, int min, int max); // N
-    std::vector<int> create_convex_seq(size_t size, int min, int max); // M N>=M
+    std::vector<int> create_seq(size_t size, int min, int max, bool convex);
     bool is_convex(const std::vector<int>& vec);
 }

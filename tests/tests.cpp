@@ -2,7 +2,7 @@
 #include "lib.h"
 
 TEST(generator, generate_random_seq) {
-    std::vector<int> t = generator::create_random_seq(10, 1, 50);
+    std::vector<int> t = generator::create_seq(10, 1, 50, 0);
     auto it = std::max_element(std::begin(t), std::end(t));
 
 
@@ -17,14 +17,14 @@ TEST(generator, is_convex) {
 }
 
 TEST(generator, generate_convex_seq) {
-    std::vector<int> t = generator::create_convex_seq(10, 1, 4);
+    std::vector<int> t = generator::create_seq(10, 1, 4, 1);
 
     EXPECT_EQ(10, t.size());
     EXPECT_TRUE(generator::is_convex(t));
 }
 
 TEST(generator, generate_zero_seq){
-    std::vector<int> t = generator::create_random_seq(5, 0, 0);
+    std::vector<int> t = generator::create_seq(5, 0, 0, 0);
 
     std::vector<int> expected{ 0,0,0,0,0 };
 
@@ -33,8 +33,8 @@ TEST(generator, generate_zero_seq){
 }
 
 TEST(generator, generate_zero_size_seq){
-    std::vector<int> t = generator::create_random_seq(0, 0, 0);
-    std::vector<int> t2 = generator::create_convex_seq(0, 0, 0);
+    std::vector<int> t = generator::create_seq(0, 0, 0, 0);
+    std::vector<int> t2 = generator::create_seq(0, 0, 0, 1);
     std::vector<int> expected{};
 
     EXPECT_EQ(expected, t);
@@ -42,8 +42,8 @@ TEST(generator, generate_zero_size_seq){
 }
 
 TEST(mpcc, mpcc_test_size) {
-    std::vector<int> a{ generator::create_random_seq(5,1,10) };
-    std::vector<int> b{ generator::create_convex_seq(5,1,10) };
+    std::vector<int> a{ generator::create_seq(5, 1, 10, 0) };
+    std::vector<int> b{ generator::create_seq(5, 1, 10, 1) };
     size_t expected = a.size() + b.size() - 1;
 
     std::vector<int> c = smawk::mpcc(a, b);
@@ -53,8 +53,8 @@ TEST(mpcc, mpcc_test_size) {
 
 TEST(mpcc, mpcc_a_or_b_zerosize) {
     std::vector<int> a{};
-    std::vector<int> a2{ generator::create_random_seq(5,1,10) };
-    std::vector<int> b{ generator::create_convex_seq(5,1,10) };
+    std::vector<int> a2{ generator::create_seq(5, 1, 10, 0) };
+    std::vector<int> b{ generator::create_seq(5, 1, 10, 1) };
     std::vector<int> b2{};
     size_t expected = 0;
 
@@ -66,36 +66,36 @@ TEST(mpcc, mpcc_a_or_b_zerosize) {
 }
 
 TEST(mpcc, mpcc_n_less_m) {
-    std::vector<int> a{ generator::create_random_seq(5,1,10) };
-    std::vector<int> b{ generator::create_convex_seq(10,1,10) };
+    std::vector<int> a{ generator::create_seq(5, 1, 10, 0) };
+    std::vector<int> b{ generator::create_seq(10, 1, 10, 1) };
 
     ASSERT_ANY_THROW(smawk::mpcc(a, b));
 }
 
 TEST(mpcc, mpcc_a_convex_b_random) {
-    std::vector<int> a{ generator::create_convex_seq(5,1,10) };
-    std::vector<int> b{ generator::create_random_seq(5,1,10) };
+    std::vector<int> a{ generator::create_seq(5, 1, 10, 1) };
+    std::vector<int> b{ generator::create_seq(5, 1, 10, 0) };
 
     EXPECT_NO_THROW(smawk::mpcc(a, b));
 }
 
 TEST(mpcc, mpcc_a_and_b_not_convex){
-    std::vector<int> a{ generator::create_random_seq(5,1,10) };
-    std::vector<int> b{ generator::create_random_seq(5,1,10) };
+    std::vector<int> a{ generator::create_seq(5, 1, 10, 0) };
+    std::vector<int> b{ generator::create_seq(5, 1, 10, 0) };
 
     EXPECT_ANY_THROW(smawk::mpcc(a, b));
 }
 
 TEST(mpcc, mpcc_bigsize_nothrow) {
-    std::vector<int> a{ generator::create_convex_seq(10'000,1,10) };
-    std::vector<int> b{ generator::create_random_seq(10'000,1,10) };
+    std::vector<int> a{ generator::create_seq(10'000, 1, 10, 0) };
+    std::vector<int> b{ generator::create_seq(10'000, 1, 10, 1) };
 
     EXPECT_NO_THROW(smawk::mpcc(a, b));
 }
 
 TEST(mpcc, mpcc_allzero) {
-    std::vector<int> a{ generator::create_random_seq(10'000,0,0) };
-    std::vector<int> b{ generator::create_random_seq(10'000,0,0) };
+    std::vector<int> a{ generator::create_seq(10'000, 0, 0, 0) };
+    std::vector<int> b{ generator::create_seq(10'000, 0, 0, 0) };
     size_t expected = a.size() + b.size() - 1;
     std::vector<int> expected_vec(expected, 0);
 

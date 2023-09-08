@@ -1,8 +1,8 @@
 #include "lib.h"
 
 int main() {
-    std::vector<int> a{ generator::create_random_seq(10,1,100) };
-    std::vector<int> b{ generator::create_convex_seq(10,1,100) };
+    std::vector<int> a{ generator::create_seq(10,1,100,0) };
+    std::vector<int> b{ generator::create_seq(10,1,100,1) };
     std::vector<int> res(a.size() + b.size() - 1);
 
     for (auto elem : a)
