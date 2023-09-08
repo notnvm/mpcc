@@ -8,15 +8,15 @@ namespace smawk {
 
     // source: https://web.cs.unlv.edu/larmore/Courses/CSC477/monge.pdf
     template<typename Selector>
-    std::vector<unsigned> smawk_(unsigned row_size, unsigned col_size, const Selector& select) {
-        auto solve = [&](auto& solve, const std::vector<unsigned>& row, const std::vector<unsigned>& col) -> std::vector<unsigned> {
+    std::vector<size_t> smawk_(size_t row_size, size_t col_size, const Selector& select) {
+        auto solve = [&](auto& solve, const std::vector<size_t>& row, const std::vector<size_t>& col) -> std::vector<size_t> {
             // =========== BASE ===========
-            const unsigned n = row.size();
+            const size_t n = row.size();
             if (n == 0)
                 return {};
 
             // =========== REDUCE ===========
-            std::vector<unsigned> sc; // stack of surv colmns
+            std::vector<size_t> sc; // stack of surv colmns
             for (auto el : col) {
                 while (!sc.empty()) {
                     if (select(row[sc.size() - 1], sc.back(), el) == sc.back()) break;
@@ -27,18 +27,18 @@ namespace smawk {
             }
             // =========== RECURSIVE ON ODD ROWS ===========
             
-            std::vector<unsigned> odd;
-            for (unsigned i = 1; i < n; i += 2)
+            std::vector<size_t> odd;
+            for (size_t i = 1; i < n; i += 2)
                 odd.push_back(row[i]);
-            std::vector<unsigned> a2 = solve(solve, odd, sc);
-            std::vector<unsigned> ans(n); 
-            for (unsigned i = 0; i < a2.size(); ++i)
+            std::vector<size_t> a2 = solve(solve, odd, sc);
+            std::vector<size_t> ans(n);
+            for (size_t i = 0; i < a2.size(); ++i)
                 ans[2 * i + 1] = a2[i];
 
             // =========== INTERPOLATE ===========
-            unsigned j = 0;
-            for (unsigned i = 0; i < n; i += 2) {
-                const unsigned end = i + 1 == n ? col.back() : ans[i + 1];
+            size_t j = 0;
+            for (size_t i = 0; i < n; i += 2) {
+                const size_t end = i + 1 == n ? col.back() : ans[i + 1];
                 int best = col[j];
                 while (col[j] < end) {
                     ++j;
@@ -49,7 +49,7 @@ namespace smawk {
             return ans;
             };
 
-        std::vector<unsigned> row(row_size), col(col_size);
+        std::vector<size_t> row(row_size), col(col_size);
         std::iota(row.begin(), row.end(), 0); std::iota(col.begin(), col.end(), 0);
         return solve(solve, row, col);
     };
@@ -65,18 +65,18 @@ namespace smawk {
         if (!generator::is_convex(b))
             std::swap(a, b);
 
-        int as = (int)a.size(); int bs = (int)b.size();
+        size_t as = a.size(); size_t bs = b.size();
 
         if (!(as >= bs))
             throw std::logic_error("n < m");
 
-        int rs = as + bs - 1;
+        size_t rs = as + bs - 1;
 
-        const auto get = [&](const unsigned i, const unsigned j) { // get matrix elements
+        const auto get = [&](const size_t i, const size_t j) { // get matrix elements
             return a[j] + b[i - j];
             };
 
-        const auto select = [&](const unsigned i, const unsigned j, const unsigned k) {
+        const auto select = [&](const size_t i, const size_t j, const size_t k) {
             if (i < k)
                 return j;
             if (i - j >= bs)
@@ -84,7 +84,7 @@ namespace smawk {
             return get(i, j) > get(i, k) ? k : j;
             };
 
-        std::vector<unsigned> argmin = smawk_(rs, as, select);
+        std::vector<size_t> argmin = smawk_(rs, as, select);
         // for (auto elem : argmin)
         //     std::cout << elem << " ";
         // std::cout << "\n";
