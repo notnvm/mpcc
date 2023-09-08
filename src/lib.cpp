@@ -66,6 +66,10 @@ namespace smawk {
             std::swap(a, b);
 
         int as = (int)a.size(); int bs = (int)b.size();
+
+        if (!(as >= bs))
+            throw std::logic_error("n < m");
+
         int rs = as + bs - 1;
 
         const auto get = [&](const unsigned i, const unsigned j) { // get matrix elements

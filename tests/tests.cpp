@@ -65,6 +65,13 @@ TEST(mpcc, mpcc_a_or_b_zerosize) {
     EXPECT_EQ(expected, c2.size());
 }
 
+TEST(mpcc, mpcc_n_less_m) {
+    std::vector<int> a{ generator::create_random_seq(5,1,10) };
+    std::vector<int> b{ generator::create_convex_seq(10,1,10) };
+
+    ASSERT_ANY_THROW(smawk::mpcc(a, b));
+}
+
 TEST(mpcc, mpcc_a_convex_b_random) {
     std::vector<int> a{ generator::create_convex_seq(5,1,10) };
     std::vector<int> b{ generator::create_random_seq(5,1,10) };
