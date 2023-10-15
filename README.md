@@ -1,9 +1,6 @@
 # convex convolution
 ### 
 ***
-<!-- _Two vectors **a**, **b** of size **N**, **M** are given. One of these vectors is convex i.e._ $$ f(i+1) - f(i) \geq f(i) - f(i-1)\; \forall i $$ 
-_Convex (min,plus) convolution calculates vector **c** in $ O(N+M) $ time complexity using the following rule:_ -->
-<!-- $ c_k = \min_{i+j=k} \{a_i + b_j\} $ -->
 
 _Two vectors **a**, **b** of size **N**, **M** are given. One of these vectors is convex._
 _Convex (min,plus) convolution calculates vector **c** in  O(N+M)  time complexity._ 
@@ -27,3 +24,6 @@ After building there are would be 3 files you need in **build/debug** directory:
 - main file ```./out```
 - tests ```./test_out```
 - benchmarks ```./g_bench``` or ```./g_bench --benchmark_format=json > <your_filename>.json``` to write result to <your_filename>.json file
+- plot results ```python3 plot_data.py <your_filename>.json all-zero``` or  ```python3 plot_data.py <your_filename>.json small-size``` or ```python3 plot_data.py <your_filename>.json equal-size```
+***
+### Results
