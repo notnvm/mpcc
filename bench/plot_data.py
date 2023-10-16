@@ -4,18 +4,21 @@ import matplotlib.pyplot as plt
 import json
 import sys
 
-types = ['all-zero', 'small-size', 'equal-size']
-if(sys.argv[2] not in types):
-    raise Exception('error in benchmark name')
 json_file = sys.argv[1]
 with open(json_file) as json_data:
     data = json.load(json_data)
 
 
+names = list(set([i['name'].split('/')[0].split(': ')[1] for i in data['benchmarks']]))
 real_time = [round(i['real_time'], 2) for i in data['benchmarks'] if sys.argv[2] in i['name']]
 sizes = [int(i['name'].rsplit('/')[1]) for i in data['benchmarks'] if sys.argv[2] in i['name']]
-# print(sizes)
-# print(real_time)
+
+if(sys.argv[2] not in names):
+    raise Exception('error in benchmark name')
+
+print(sizes)
+print(real_time)
+print(names)
 
 def draw(size, time) -> None:
     
