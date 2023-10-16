@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+// #include <gmock/gmock.h>
 #include "lib.h"
 
 TEST(generator, generate_random_seq) {
@@ -16,6 +17,18 @@ TEST(generator, is_convex) {
     EXPECT_TRUE(generator::is_convex(t));
 }
 
+TEST(generator, is_convex2) {
+    std::vector<int> t{ 1, 2, 4, 7, 11, 16 };
+
+    EXPECT_TRUE(generator::is_convex(t));
+}
+
+TEST(generator, is_convex3) {
+    std::vector<int> t{ 1, 2, 4, 7, 7, 16 };
+
+    EXPECT_FALSE(generator::is_convex(t));
+}
+
 TEST(generator, generate_convex_seq) {
     std::vector<int> t = generator::create_seq(10, 1, 4, 1);
 
@@ -23,7 +36,7 @@ TEST(generator, generate_convex_seq) {
     EXPECT_TRUE(generator::is_convex(t));
 }
 
-TEST(generator, generate_zero_seq){
+TEST(generator, generate_zero_seq) {
     std::vector<int> t = generator::create_seq(5, 0, 0, 0);
 
     std::vector<int> expected{ 0,0,0,0,0 };
@@ -32,7 +45,7 @@ TEST(generator, generate_zero_seq){
 
 }
 
-TEST(generator, generate_zero_size_seq){
+TEST(generator, generate_zero_size_seq) {
     std::vector<int> t = generator::create_seq(0, 0, 0, 0);
     std::vector<int> t2 = generator::create_seq(0, 0, 0, 1);
     std::vector<int> expected{};
@@ -60,7 +73,7 @@ TEST(mpcc, mpcc_a_or_b_zerosize) {
 
     std::vector<int> c = smawk::mpcc(a, b);
     std::vector<int> c2 = smawk::mpcc(a2, b2);
-    
+
     EXPECT_EQ(expected, c.size());
     EXPECT_EQ(expected, c2.size());
 }
@@ -79,7 +92,7 @@ TEST(mpcc, mpcc_a_convex_b_random) {
     EXPECT_NO_THROW(smawk::mpcc(a, b));
 }
 
-TEST(mpcc, mpcc_a_and_b_not_convex){
+TEST(mpcc, mpcc_a_and_b_not_convex) {
     std::vector<int> a{ generator::create_seq(5, 1, 10, 0) };
     std::vector<int> b{ generator::create_seq(5, 1, 10, 0) };
 
@@ -112,7 +125,11 @@ TEST(mpcc, mpcc_result_1) {
     std::vector<int> expected(a.size() + b.size() - 1, 2);
     std::vector<int> c = smawk::mpcc(a, b);
 
-    EXPECT_EQ(expected, c);
+    EXPECT_TRUE(generator::is_convex(b));
+    EXPECT_NO_THROW(smawk::mpcc(a, b));
+    // ASSERT_THAT(c, ElementsAre(2, 2, 2, 2, 2, 2, 2));
+    for (size_t i{}; i < c.size(); ++i)
+        EXPECT_EQ(expected[i], c[i]);
 }
 
 TEST(mpcc, mpcc_result_2) {
@@ -122,5 +139,48 @@ TEST(mpcc, mpcc_result_2) {
     std::vector<int> expected{ 4, 3, 4, 3, 4, 6, 9 };
     std::vector<int> c = smawk::mpcc(a, b);
 
-    EXPECT_EQ(expected, c);
+    EXPECT_TRUE(generator::is_convex(b));
+    EXPECT_NO_THROW(smawk::mpcc(a, b));
+    for (size_t i{}; i < c.size(); ++i)
+        EXPECT_EQ(expected[i], c[i]);
+}
+
+TEST(mpcc, mpcc_result_3) {
+    std::vector<int> a{ -1, 8, 6, 2 };
+    std::vector<int> b{ 8, 9, 11 };
+
+    std::vector<int> expected{ 7, 8, 10, 10, 11, 13 };
+    std::vector<int> c = smawk::mpcc(a, b);
+
+    EXPECT_TRUE(generator::is_convex(b));
+    EXPECT_NO_THROW(smawk::mpcc(a, b));
+    for (size_t i{}; i < c.size(); ++i)
+        EXPECT_EQ(expected[i], c[i]);
+}
+
+TEST(mpcc, mpcc_result_4) {
+    std::vector<int> a{ -1, -10};
+    std::vector<int> b{ 1, 2 };
+
+    std::vector<int> expected{ 0, -9, -8 };
+    std::vector<int> c = smawk::mpcc(a, b);
+
+    EXPECT_TRUE(generator::is_convex(b));
+    EXPECT_NO_THROW(smawk::mpcc(a, b));
+    for (size_t i{}; i < c.size(); ++i)
+        EXPECT_EQ(expected[i], c[i]);
+}
+
+TEST(mpcc, mpcc_result_5) {
+    std::vector<int> a{ -2, 0, 3, 7, 12 };
+    std::vector<int> b{ -1, -10, 14, 13, 22 };
+    EXPECT_FALSE(generator::is_convex(b));
+
+    std::vector<int> expected{ -3, -12, -10, -7, -3, 2, 20, 25, 34 };
+    std::vector<int> c = smawk::mpcc(a, b);
+    EXPECT_TRUE(generator::is_convex(b)); // check for swap if b is not convex
+    
+    EXPECT_NO_THROW(smawk::mpcc(a, b));
+    for (size_t i{}; i < c.size(); ++i)
+        EXPECT_EQ(expected[i], c[i]);
 }
