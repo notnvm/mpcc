@@ -29,7 +29,9 @@ After building there are would be 3 files you need in **build/debug** directory:
 ### Results
 - Sequences a and b are **equal-sized**:
 ![plot](./bench/equal-size.jpg)
+
 - **Small size**:
 ![plot](./bench/small-size.jpg)
+
 - **Different sizes**:
 ![plot](./bench/different-size.jpg)
