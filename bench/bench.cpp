@@ -1,55 +1,66 @@
 #include <benchmark/benchmark.h>
 #include "lib.h"
 
-std::vector<int> mpcc_bench(size_t size_a, size_t size_b, int min, int max) {
-    std::vector<int> a{ generator::create_seq(size_a, min, max, 0) };
-    std::vector<int> b{ generator::create_seq(size_b, min, max, 1) };
-
+std::vector<int> bench(std::vector<int>& a, std::vector<int>& b) {
     std::vector<int> c = smawk::mpcc(a, b);
-
-    return c;
-}
-
-std::vector<int> mpcc_allzero_bench(size_t size) {
-    std::vector<int> a{ generator::create_seq(size, 0, 0, 0) };
-    std::vector<int> b{ generator::create_seq(size, 0, 0, 1) };
-
-    std::vector<int> c = smawk::mpcc(a, b);
-
     return c;
 }
 
 void mpcc_eqs(benchmark::State& state) {
+    std::vector<int> a{ generator::create_seq(state.range(0), 1, 100, 0) };
+    std::vector<int> b{ generator::create_seq(state.range(0), 1, 100, 1) };
+
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(
-            mpcc_bench(state.range(0), state.range(0), 1, 100)
+            bench(a, b)
         );
     }
 }
-BENCHMARK(mpcc_eqs)->Name("< min,+ > - convex convolution: equal-size")->RangeMultiplier(10)->Range(10, 1'000'000)->Unit(benchmark::kMillisecond);
+BENCHMARK(mpcc_eqs)->Name("< min,+ > - convex convolution: equal-size")->RangeMultiplier(10)->Range(10, 10'000'000)->Unit(benchmark::kMillisecond);
 
 void mpcc_uneqs(benchmark::State& state) {
+    std::vector<int> a{ generator::create_seq(state.range(0), 1, 100, 0) };
+    std::vector<int> b{ generator::create_seq(10, 1, 100, 1) };
+
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(
-            mpcc_bench(state.range(0), 10, 1, 100)
+            bench(a, b)
         );
     }
 }
-BENCHMARK(mpcc_uneqs)->Name("< min,+ > - convex convolution: unequal-size(M - const)")->RangeMultiplier(10)->Range(10, 1'000'000)->Unit(benchmark::kMillisecond);
+BENCHMARK(mpcc_uneqs)->Name("< min,+ > - convex convolution: different-size")->RangeMultiplier(10)->Range(10, 10'000'000)->Unit(benchmark::kMillisecond);
 
 void mpcc_all_zero(benchmark::State& state) {
+    std::vector<int> a{ generator::create_seq(state.range(0), 0, 0, 0) };
+    std::vector<int> b{ generator::create_seq(state.range(0), 0, 0, 1) };
+
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(
-            mpcc_allzero_bench(state.range(0))
+            bench(a, b)
         );
     }
 }
-BENCHMARK(mpcc_eqs)->Name("< min,+ > - convex convolution: all-zero")->RangeMultiplier(10)->Range(10, 1'000'000)->Unit(benchmark::kMillisecond);
+BENCHMARK(mpcc_eqs)->Name("< min,+ > - convex convolution: all-zero")->RangeMultiplier(10)->Range(10, 10'000'000)->Unit(benchmark::kMillisecond);
 
-void mpcc_small_size(benchmark::State& state) {
+void mpcc_ab_convex(benchmark::State& state) {
+    std::vector<int> a{ generator::create_seq(state.range(0), 1, 100, 1) };
+    std::vector<int> b{ generator::create_seq(state.range(0), 1, 100, 1) };
+
     while (state.KeepRunning()) {
         benchmark::DoNotOptimize(
-            mpcc_allzero_bench(state.range(0))
+            bench(a, b)
+        );
+    }
+}
+BENCHMARK(mpcc_eqs)->Name("< min,+ > - convex convolution: ab-convex")->RangeMultiplier(10)->Range(10, 10'000'000)->Unit(benchmark::kMillisecond);
+
+void mpcc_small_size(benchmark::State& state) {
+    std::vector<int> a{ generator::create_seq(state.range(0), 1, 100, 1) };
+    std::vector<int> b{ generator::create_seq(state.range(0), 1, 100, 1) };
+
+    while (state.KeepRunning()) {
+        benchmark::DoNotOptimize(
+            bench(a, b)
         );
     }
 }
