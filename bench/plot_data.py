@@ -23,7 +23,7 @@ print(names)
 def draw(size, time) -> None:
     
     fig, ax = plt.subplots()
-    ax.plot(size, time, 'o-', label='smawk')
+    ax.plot(size, time, 'o-', label='smawk'+': '+ sys.argv[2])
     ax.ticklabel_format(useOffset=False, style='plain', axis='both')
     # ax.set_xticklabels([])
     # ax.set_yticklabels([])
