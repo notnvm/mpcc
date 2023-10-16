@@ -27,3 +27,9 @@ After building there are would be 3 files you need in **build/debug** directory:
 - plot results ```python3 ../bench/plot_data.py <your_filename>.json all-zero``` or  ```python3 ../bench/plot_data.py <your_filename>.json small-size``` or ```python3 ../bench/plot_data.py <your_filename>.json equal-size```
 ***
 ### Results
+- Sequences a and b are **equal-sized**:
+![plot](./bench/equal-size.jpg)
+- **Small size**:
+![plot](./bench/small-size.jpg)
+- **Different sizes**:
+![plot](./bench/different-size.jpg)
