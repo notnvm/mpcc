@@ -10,13 +10,11 @@ namespace smawk {
     template<typename Selector>
     std::vector<size_t> smawk_(size_t row_size, size_t col_size, const Selector& select) {
         auto solve = [&](auto& solve, const std::vector<size_t>& row, const std::vector<size_t>& col) -> std::vector<size_t> {
-            // =========== BASE ===========
             const size_t n = row.size();
             if (n == 0)
                 return {};
 
-            // =========== REDUCE ===========
-            std::vector<size_t> sc; // stack of surv colmns
+            std::vector<size_t> sc;
             for (auto el : col) {
                 while (!sc.empty()) {
                     if (select(row[sc.size() - 1], sc.back(), el) == sc.back()) break;
@@ -25,7 +23,6 @@ namespace smawk {
                 if (sc.size() < n)
                     sc.push_back(el);
             }
-            // =========== RECURSIVE ON ODD ROWS ===========
             
             std::vector<size_t> odd;
             for (size_t i = 1; i < n; i += 2)
@@ -35,7 +32,6 @@ namespace smawk {
             for (size_t i = 0; i < a2.size(); ++i)
                 ans[2 * i + 1] = a2[i];
 
-            // =========== INTERPOLATE ===========
             size_t j = 0;
             for (size_t i = 0; i < n; i += 2) {
                 const size_t end = i + 1 == n ? col.back() : ans[i + 1];
@@ -72,7 +68,7 @@ namespace smawk {
 
         size_t rs = as + bs - 1;
 
-        const auto get = [&](const size_t i, const size_t j) { // get matrix elements
+        const auto get = [&](const size_t i, const size_t j) {
             return a[j] + b[i - j];
             };
 
@@ -85,9 +81,6 @@ namespace smawk {
             };
 
         std::vector<size_t> argmin = smawk_(rs, as, select);
-        // for (auto elem : argmin)
-        //     std::cout << elem << " ";
-        // std::cout << "\n";
         std::vector<int> c(rs);
         for (size_t i = 0; i < rs; ++i)
             c[i] = get(i, argmin[i]);
