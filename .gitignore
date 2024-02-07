@@ -1,12 +1,5 @@
-old/
 build/
 debug/
 .vscode/
-testing_from_git/
-theory/
-!theory/smawk.pdf
-!theory/svp.pdf
-!theory/50YeaeslP.pdf
-bench/
-!bench/*.cpp
-!bench/*.py
+scripts/pics/
+scripts/*.json
