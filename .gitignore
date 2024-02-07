@@ -1,5 +1,4 @@
 build/
 debug/
 .vscode/
-scripts/pics/
 scripts/*.json
