@@ -30,12 +30,12 @@ After building there are would be 3 files you need in **build/debug** directory:
 ### Results
 - Sequences a and b are **equal-sized**:
   
-![plot](./bench/equal-size.jpg)
+![plot](./scripts/pics/equal-size.jpg)
 
 - **Small size**:
   
-![plot](./bench/small-size.jpg)
+![plot](./scripts/pics/small-size.jpg)
 
 - **Different sizes**:
   
-![plot](./bench/different-size.jpg)
+![plot](./scripts/pics/different-size.jpg)

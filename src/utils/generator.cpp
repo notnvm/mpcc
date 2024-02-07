@@ -1,4 +1,4 @@
-#include "generator.h"
+#include "generator.hpp"
 
 std::vector<int> generator::create_seq(size_t size, int min, int max, bool convex) {
 

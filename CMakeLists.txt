@@ -4,15 +4,15 @@ project(mpcc LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 # set(CMAKE_CXX_STANDARD_REQUIRED YES)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(UTILS src/generator.cpp src/lib.cpp)
+set(UTILS src/utils/generator.cpp src/lib/lib.cpp)
 set(EXE src/main.cpp ${UTILS})
-set(BENCH bench/bench.cpp ${UTILS})
+set(BENCH src/bench/bench.cpp ${UTILS})
 
-add_executable(out ${EXE})
-target_include_directories(out PRIVATE include)
+add_executable(mpcc_bin ${EXE})
+target_include_directories(mpcc_bin PRIVATE include)
 
-# from google docs
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -22,31 +22,33 @@ FetchContent_Declare(
 FetchContent_Declare(
   googlebenchmark
   GIT_REPOSITORY https://github.com/google/benchmark.git
-  GIT_TAG main) # need main for benchmark::benchmark
+  GIT_TAG main
+)
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(
   googletest
-  googlebenchmark)
+  googlebenchmark
+)
 
-add_executable(g_bench ${BENCH})
-target_include_directories(g_bench PRIVATE include)
-target_link_libraries(g_bench benchmark::benchmark)
+add_executable(mpcc_bench ${BENCH})
+target_include_directories(mpcc_bench PRIVATE include)
+target_link_libraries(mpcc_bench benchmark::benchmark)
 
 enable_testing()
 
 add_executable(
-  test_out
-  tests/tests.cpp
-  src/generator.cpp
-  src/lib.cpp
+  mpcc_tests
+  src/tests/tests.cpp
+  src/utils/generator.cpp
+  src/lib/lib.cpp
 )
 target_link_libraries(
-  test_out
+  mpcc_tests
   GTest::gtest_main
 )
-target_include_directories(test_out PRIVATE include)
+target_include_directories(mpcc_tests PRIVATE include)
 
 include(GoogleTest)
-gtest_discover_tests(test_out)
+gtest_discover_tests(mpcc_tests)
