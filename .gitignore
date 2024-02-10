@@ -1,4 +1,8 @@
 build/
 debug/
+ortools/
+old/
+.gitmodules
 .vscode/
 scripts/*.json
+
