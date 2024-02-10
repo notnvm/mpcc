@@ -24,10 +24,10 @@ cmake --build debug
 ***
 ### Usage  
 After building there are would be 3 files you need in **build/debug** directory:
-- main file ```./out```
-- tests ```./test_out```
-- benchmarks ```./g_bench``` or ```./g_bench --benchmark_format=json > your_filename.json``` to write result to **your_filename.json** file
-- plot results ```python3 ../bench/plot_data.py your_filename.json bench_type``` 
+- main file ```./mpcc_bin```
+- tests ```./mpcc_tests```
+- benchmarks ```./mpcc_bench``` or ```./mpcc_bench --benchmark_format=json > your_filename.json``` to write result to **your_filename.json** file
+- plot results ```python3 scripts/plot_data.py your_filename.json bench_type``` 
 - bench types: ```all-zero```; ```ab-convex```; ```equal-size```; ```small-size```; ```different-size```
 ***
 ### Results
