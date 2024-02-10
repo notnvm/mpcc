@@ -9,6 +9,7 @@ _Convex (min,plus) convolution calculates vector **c** in  O(N+M)  time complexi
 ### Building
 
 - Install google or-tools 
+  
 install ortools in **root** of your **working** directory. https://developers.google.com/optimization/install/cpp
 
 - Release build
