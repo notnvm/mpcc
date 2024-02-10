@@ -1,5 +1,6 @@
 #include <benchmark/benchmark.h>
 #include "../lib/lib.hpp"
+#include "../solver/solver.hpp"
 
 std::vector<int> bench(std::vector<int>& a, std::vector<int>& b) {
     std::vector<int> c = smawk::mpcc(a, b);
